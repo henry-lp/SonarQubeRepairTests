@@ -4,7 +4,7 @@ class MathOnFloat {
     void myMethod() {
         float a = 1.6777216E7F;
         float b = 1.0F;
-        double d1 = a + b;// Noncompliant ; addition is still between 2 floats
+        double d1 = (double) a + (double) b;// Noncompliant ; addition is still between 2 floats
 
         int i = 16777216;
         int j = 1;
