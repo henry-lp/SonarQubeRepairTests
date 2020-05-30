@@ -1,11 +1,8 @@
-// Test for rule s2272
-
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Stack;
-
 // Test based on https://rules.sonarsource.com/java/type/Bug/RSPEC-2272
 public class IteratorNextException implements Iterator {
-
     private Stack<String> stack = new Stack();
 
     @Override
@@ -14,12 +11,15 @@ public class IteratorNextException implements Iterator {
     }
 
     @Override
-    public String next() { // Noncompliant
+    public String next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        // Noncompliant
         if (!hasNext()) {
             return null;
         } else {
             return stack.pop();
         }
     }
-
 }
