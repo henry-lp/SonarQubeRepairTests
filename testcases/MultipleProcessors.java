@@ -4,7 +4,7 @@ class MultipleProcessors {
     void foo() {
         BigDecimal bd2 = BigDecimal.valueOf(1.1);// Noncompliant by BigDecimalDoubleConstructorCheck
 
-        float twoThirds = 2 / 3;// Noncompliant by CastArithmeticOperandCheck
+        float twoThirds = (float) 2 / 3;// Noncompliant by CastArithmeticOperandCheck
 
         AtomicInteger aInt1 = new AtomicInteger(0);
         AtomicInteger aInt2 = new AtomicInteger(0);
