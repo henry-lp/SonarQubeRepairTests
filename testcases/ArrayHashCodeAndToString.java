@@ -11,7 +11,7 @@ public class ArrayHashCodeAndToString {
     // Aditional tests
     public void foo(String[] args) {
         String[] array1 = new String[]{ "F", "O", "O" };
-        System.out.println(array1.toString());// Noncompliant
+        System.out.println(Arrays.toString(array1));// Noncompliant
 
         varargsTest(1, 2, 3);
     }
