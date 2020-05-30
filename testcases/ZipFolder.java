@@ -1,4 +1,3 @@
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,14 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
 import spoon.Launcher;
 import spoon.compiler.SpoonFile;
 import spoon.compiler.SpoonFolder;
 import spoon.compiler.SpoonResourceHelper;
-
 public class ZipFolder implements SpoonFolder {
-
     File file;
 
     List<SpoonFile> files;
@@ -38,13 +34,11 @@ public class ZipFolder implements SpoonFolder {
 
     public List<SpoonFile> getAllJavaFiles() {
         List<SpoonFile> files = new ArrayList<>();
-
         for (SpoonFile f : getFiles()) {
             if (f.isJava()) {
                 files.add(f);
             }
         }
-
         // no subfolder, skipping
         // for (CtFolder fol : getSubFolder())
         // files.addAll(fol.getAllJavaFile());
@@ -55,29 +49,22 @@ public class ZipFolder implements SpoonFolder {
         // Indexing content
         if (files == null) {
             files = new ArrayList<>();
-            ZipInputStream zipInput = null;
-            try {
-                zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)));// Noncompliant
-
+            try (ZipInputStream zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)))) {
                 ZipEntry entry;
                 while ((entry = zipInput.getNextEntry()) != null) {
                     // deflate in buffer
                     final int buffer = 2048;
-                    ByteArrayOutputStream output = new ByteArrayOutputStream(
-                            buffer);
+                    ByteArrayOutputStream output = new ByteArrayOutputStream(buffer);
                     int count;
-                    byte data[] = new byte[buffer];
-                    while ((count = zipInput.read(data, 0, buffer)) != -1) {
+                    byte[] data = new byte[buffer];
+                    while ((count = zipInput.read(data, 0, buffer)) != (-1)) {
                         output.write(data, 0, count);
-                    }
+                    } 
                     output.flush();
                     output.close();
-
-                    files.add(new ZipFile(this, entry.getName(), output
-                            .toByteArray()));
-                }
+                    files.add(new ZipFile(this, entry.getName(), output.toByteArray()));
+                } 
                 zipInput.close();
-
             } catch (Exception e) {
                 Launcher.LOGGER.error(e.getMessage(), e);
             }
@@ -155,16 +142,16 @@ public class ZipFolder implements SpoonFolder {
         throw new UnsupportedOperationException("not possible a real folder");
     }
 
-    /** physically extracts on disk all files of this zip file in the destinationDir `destDir` */
+    /**
+     * physically extracts on disk all files of this zip file in the destinationDir `destDir`
+     */
     public void extract(File destDir) {
-        ZipInputStream zipInput = null;
-        try {
-            zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)));// Noncompliant
-
+        try (ZipInputStream zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             ZipEntry entry;
             while ((entry = zipInput.getNextEntry()) != null) {
-                File f = new File(destDir + File.separator + entry.getName());
-                if (entry.isDirectory()) { // if its a directory, create it
+                File f = new File((destDir + File.separator) + entry.getName());
+                if (entry.isDirectory()) {
+                    // if its a directory, create it
                     f.mkdir();
                     continue;
                 }
@@ -172,16 +159,18 @@ public class ZipFolder implements SpoonFolder {
                 final int buffer = 2048;
                 // Force parent directory creation, sometimes directory was not yet handled
                 f.getParentFile().mkdirs();
-                // in the zip entry iteration
-                OutputStream output = new BufferedOutputStream(new FileOutputStream(f));// Noncompliant
-                int count;
-                byte data[] = new byte[buffer];
-                while ((count = zipInput.read(data, 0, buffer)) != -1) {
-                    output.write(data, 0, count);
+                try (// in the zip entry iteration
+                OutputStream output = new BufferedOutputStream(new FileOutputStream(f))// Noncompliant
+                ) {
+                    int count;
+                    byte[] data = new byte[buffer];
+                    while ((count = zipInput.read(data, 0, buffer)) != (-1)) {
+                        output.write(data, 0, count);
+                    } 
+                    output.flush();
+                    output.close();
                 }
-                output.flush();
-                output.close();
-            }
+            } 
             zipInput.close();
         } catch (Exception e) {
             Launcher.LOGGER.error(e.getMessage(), e);
