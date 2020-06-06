@@ -1,7 +1,7 @@
 public class CompareToReturnValue implements Comparable<CompareToReturnValue> {
   @Override
   public int compareTo(CompareToReturnValue a) {
-    return Integer.MIN_VALUE; // Noncompliant [[sc=12;ec=29]] {{Simply return -1}}
+    return -1; // Noncompliant [[sc=12;ec=29]] {{Simply return -1}}
   }
 
   public int compareTo() {
