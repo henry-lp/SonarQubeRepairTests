@@ -5,7 +5,7 @@ public class ArrayHashCodeAndToString {
 
 	// Tests from https://rules.sonarsource.com/java/type/Bug/RSPEC-2116
 	public static void main( String[] args ) {
-		int argHash = args.hashCode(); // Noncompliant
+		int argHash = args.hashCode(args); // Noncompliant
 	}
 
 	// Tests from https://github.com/SonarSource/sonar-java/blob/master/java-checks-test-sources/src/main/java/checks/ArrayHashCodeAndToStringCheck.java
