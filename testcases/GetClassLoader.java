@@ -2,7 +2,7 @@ import javax.ejb.embeddable.EJBContainer;
 
 public class GetClassLoader {
 
-	ClassLoader d = this.getClass().getClassLoader(); // Noncompliant
+	ClassLoader d = this.getClass().getContextClassLoader(); // Noncompliant
 
 	public void case1() {
 		ClassLoader c = this.getClass().getClassLoader(); // Noncompliant
