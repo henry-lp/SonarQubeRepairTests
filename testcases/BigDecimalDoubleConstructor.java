@@ -8,7 +8,7 @@ public class BigDecimalDoubleConstructor {
     // Tests from https://rules.sonarsource.com/java/type/Bug/RSPEC-2111
     public void main(String[] args) {
         double d = 1.1;
-        BigDecimal bd1 = new BigDecimal(d); // Noncompliant; see comment above
+        BigDecimal bd1 = BigDecimal.valueOf(d); // Noncompliant; see comment above
         BigDecimal bd2 = new BigDecimal(1.1); // Noncompliant; same result
     }
 
