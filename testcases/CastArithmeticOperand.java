@@ -5,7 +5,7 @@ import java.util.Date;
 class CastArithmeticOperand {
 
     // Tests from https://rules.sonarsource.com/java/type/Bug/RSPEC-2184
-    float twoThirds = 2/3; // Noncompliant; int division. Yields 0.0
+    float twoThirds = (float) 2/3; // Noncompliant; int division. Yields 0.0
     long millisInYear = 1000*3600*24*365; // Noncompliant; int multiplication. Yields 1471228928
     long bigNum = Integer.MAX_VALUE + 2; // Noncompliant. Yields -2147483647
     long bigNegNum =  Integer.MIN_VALUE-1; // Noncompliant, gives a positive result instead of a negative one.
