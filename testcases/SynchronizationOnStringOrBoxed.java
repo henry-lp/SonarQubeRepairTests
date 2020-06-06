@@ -1,4 +1,4 @@
-class SynchronizationOnStringOrBoxed {
+class SynchronizationOnStringOrBoxed {private final java.lang.Object bLockLegal = new Object();
   
   private final Boolean bLock = Boolean.FALSE;
   private final Integer iLock = Integer.valueOf(0);
@@ -23,7 +23,7 @@ class SynchronizationOnStringOrBoxed {
 
   void method1() {
     
-    synchronized(bLock) {  // Noncompliant [[sc=18;ec=23]] {{Synchronize on a new "Object" instead.}}
+    synchronized(bLockLegal) {  // Noncompliant [[sc=18;ec=23]] {{Synchronize on a new "Object" instead.}}
       // ...
     }
     synchronized(iLock) {  // Noncompliant
