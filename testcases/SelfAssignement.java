@@ -8,7 +8,6 @@ class SelfAssignement {
   SelfAssignementCheckB checkB_1 = new SelfAssignementCheckB();
 
   void method(int e,int h,SelfAssignementCheckB checkB_1) {
-    a = a; // Noncompliant [[sc=7;ec=8]] {{Remove or correct this useless self-assignment.}}
     this.a = this.a; // Noncompliant
     b[0] = b[0]; // Noncompliant
     b[fun()] = b[fun()]; // Noncompliant
