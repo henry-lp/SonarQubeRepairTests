@@ -14,7 +14,9 @@ public class IteratorNextException implements Iterator {
     }
 
     @Override
-    public String next() { // Noncompliant
+    public String next() {if (!hasNext()) {
+			throw new java.util.NoSuchElementException();
+		} // Noncompliant
         if (!hasNext()) {
             return null;
         } else {
