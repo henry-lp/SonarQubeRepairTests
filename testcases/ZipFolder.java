@@ -17,6 +17,15 @@ import spoon.Launcher;
 import spoon.compiler.SpoonFile;
 import spoon.compiler.SpoonFolder;
 import spoon.compiler.SpoonResourceHelper;
+import spoon.compiler.SpoonFile;
+import java.io.FileInputStream;
+import java.util.zip.ZipInputStream;
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import spoon.Launcher;
+import java.util.List;
+import java.io.BufferedOutputStream;
+import java.io.File;
 
 public class ZipFolder implements SpoonFolder {
 
@@ -55,32 +64,25 @@ public class ZipFolder implements SpoonFolder {
         // Indexing content
         if (files == null) {
             files = new ArrayList<>();
-            ZipInputStream zipInput = null;
-            try {
-                zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)));// Noncompliant
-
-                ZipEntry entry;
-                while ((entry = zipInput.getNextEntry()) != null) {
-                    // deflate in buffer
-                    final int buffer = 2048;
-                    ByteArrayOutputStream output = new ByteArrayOutputStream(
-                            buffer);
-                    int count;
-                    byte data[] = new byte[buffer];
-                    while ((count = zipInput.read(data, 0, buffer)) != -1) {
-                        output.write(data, 0, count);
-                    }
-                    output.flush();
-                    output.close();
-
-                    files.add(new ZipFile(this, entry.getName(), output
-                            .toByteArray()));
-                }
-                zipInput.close();
-
-            } catch (Exception e) {
-                Launcher.LOGGER.error(e.getMessage(), e);
-            }
+			try (ZipInputStream zipInput = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+				ZipEntry entry;
+				while ((entry = zipInput.getNextEntry()) != null) {
+					// deflate in buffer
+					final int buffer = 2048;
+					ByteArrayOutputStream output = new ByteArrayOutputStream(buffer);
+					int count;
+					byte[] data = new byte[buffer];
+					while ((count = zipInput.read(data, 0, buffer)) != (-1)) {
+						output.write(data, 0, count);
+					} 
+					output.flush();
+					output.close();
+					files.add(new ZipFile(this, entry.getName(), output.toByteArray()));
+				} 
+				zipInput.close();
+			} catch (java.lang.Exception e) {
+				Launcher.LOGGER.error(e.getMessage(), e);
+			}
         }
         return files;
     }
