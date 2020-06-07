@@ -1,3 +1,4 @@
+
 // Test for rule s4973
 
 public class CompareStringsBoxedTypesWithEquals {
@@ -7,7 +8,7 @@ public class CompareStringsBoxedTypesWithEquals {
         String firstName = getFirstName(); // String overrides equals
         String lastName = getLastName();
 
-        if (firstName == lastName) { } ; // Noncompliant; false even if the strings have the same value
+        if (firstName.equals(lastName) ) { } // Noncompliant; false even if the strings have the same value
     }
 
     // Aditional tests
