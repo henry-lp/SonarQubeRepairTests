@@ -24,7 +24,7 @@ class SynchronizationOnGetClass {
 
   public void method1() {
     InnerClass i = new InnerClass();
-    synchronized (i.getObject().getClass()) { // Noncompliant - object's modifier is unknown, assume non-final nor enum
+    synchronized (i.getObject().class) { // Noncompliant - object's modifier is unknown, assume non-final nor enum
     }
   }
 
